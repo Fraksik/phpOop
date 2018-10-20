@@ -4,12 +4,12 @@ namespace app\models;
 
 class Product extends DataModel
 {
-	public $id;
-	public $name;
-	public $description;
-	public $price;
-	public $producerID;
-	public $test = 5;
+	protected $id;
+	protected $name;
+	protected $description;
+	protected $price;
+	protected $producerID;
+
 
 	public function __construct($name, $description, $price, $producerID)
 	{

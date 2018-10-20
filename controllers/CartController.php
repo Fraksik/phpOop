@@ -24,7 +24,6 @@ class CartController extends ControllersModel
 
 	}
 
-
 	public function actionIndex()
 	{
 		$cart = Cart::getAll();

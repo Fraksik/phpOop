@@ -6,10 +6,10 @@ namespace app\models;
 class Cart extends DataModel
 {
 	protected $id;
-	public $userId;
-	public $productId;
-	public $count;
-	public $cost;
+	protected $userId;
+	protected $productId;
+	protected $count;
+	protected $cost;
 
 	public function __construct($userId, $productId, $count, $cost)
 	{
