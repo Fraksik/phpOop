@@ -76,7 +76,6 @@ abstract class DataModel implements IModel
 	public function update()
 	{
 		$table = $this->getTableName();
-
 		$arr = $this->getValues();
 		$values = $arr['values'];
 
