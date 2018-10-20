@@ -14,4 +14,3 @@ if(class_exists($controllerClass)){
 	$controller->run($actionName);
 }
 
-echo '1111';
