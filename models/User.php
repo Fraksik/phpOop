@@ -5,9 +5,9 @@ namespace app\models;
 class User extends DataModel
 {
 	protected $id;
-	public $userName;
-	public $userPass;
-	public $userRole;
+	protected $userName;
+	protected $userPass;
+	protected $userRole;
 
 	public function __construct($name, $pass, $role=2)
 	{

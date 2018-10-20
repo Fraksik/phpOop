@@ -6,8 +6,8 @@ namespace app\models;
 class Order extends DataModel
 {
 	protected $id;
-	public $userId;
-	public $cost;
+	protected $userId;
+	protected $cost;
 	protected $status;
 	protected $date;
 

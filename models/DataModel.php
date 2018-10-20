@@ -8,6 +8,7 @@ use app\services\DB;
 abstract class DataModel implements IModel
 {
 	protected $db;
+	private $change = [];
 
 	public function __construct()
 	{
@@ -76,23 +77,13 @@ abstract class DataModel implements IModel
 	{
 		$table = $this->getTableName();
 
-		$sql = "SELECT * FROM {$table} WHERE id = :id";
-		$oldDbData =  Db::getInstance()->queryOne($sql, [':id' => $this->id]);
-
 		$arr = $this->getValues();
 		$values = $arr['values'];
-		$newData = [];
-
-		foreach ($oldDbData as $key => $value) {
-			if ($values[$key] != $value) {
-				$newData[$key] = $values[$key];
-			}
-		}
 
 		$sql = "update {$table} set ";
 		$sqlArr = [];
 
-		foreach ($newData as $key => $data) {
+		foreach ($this->change as $key => $data) {
 			array_push($sqlArr, "$key = '$data'");
 		}
 		$sql .= implode(", ", $sqlArr) . " where id = {$this->id}";
@@ -140,6 +131,14 @@ abstract class DataModel implements IModel
 			array_push($arr, $col['Field']);
 		}
 		return $arr;
+	}
+
+	public function __set($name, $value)
+	{
+		if(property_exists($this, $name)) {
+			$this->$name = $value;
+			$this->change[$name] = $value;
+		}
 	}
 
 }

@@ -7,8 +7,8 @@ namespace app\models;
 class Category extends DataModel
 {
 	protected $id;
-	public $name;
-	public $description;
+	protected $name;
+	protected $description;
 
 
 	public function __construct($name, $description)
