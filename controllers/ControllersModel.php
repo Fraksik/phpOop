@@ -5,6 +5,21 @@ namespace app\controllers;
 
 abstract class ControllersModel
 {
+	protected $action;
+	protected $defaultAction = 'index';
+	protected $useLayout = true;
+
+	public function run($action = null)
+	{
+		$this->action = $action ?: $this->defaultAction;
+		$method = "action" . ucfirst($this->action);
+		if(method_exists($this, $method)){
+			$this->$method();
+		}else{
+			echo "404";
+		}
+
+	}
 
 	protected function render($template, $params = [])
 	{

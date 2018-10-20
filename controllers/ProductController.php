@@ -8,10 +8,7 @@ use app\models\Product;
 
 class ProductController extends ControllersModel
 {
-    protected $action;
-	protected $defaultAction = 'index';
 	protected $layout = "main";
-	protected $useLayout = true;
 
     public function run($action = null)
     {
