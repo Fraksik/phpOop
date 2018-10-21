@@ -3,6 +3,14 @@
     "require": {
         "twig/twig": "^2.5"
     },
+    "autoload": {
+      "psr-4": {
+        "app\\": ""
+      },
+      "files": [
+        "config/main.php"
+      ]
+    },
     "authors": [
         {
             "name": "Fraksik",
