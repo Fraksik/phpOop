@@ -8,7 +8,6 @@ use app\models\Product;
 
 class ProductController extends Controllers
 {
-	protected $layout = "main";
 
     public function actionIndex()
     {

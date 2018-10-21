@@ -7,7 +7,6 @@ use app\models\Cart;
 
 class CartController extends Controllers
 {
-	protected $layout = "main";
 
 	public function actionIndex()
 	{

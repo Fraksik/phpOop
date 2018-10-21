@@ -7,6 +7,7 @@ abstract class Controllers
 {
 	protected $action;
 	protected $defaultAction = 'index';
+	protected $layout = "main";
 	protected $useLayout = true;
 
 	public function run($action = null)
