@@ -1,0 +1,12 @@
+{
+    "name": "fraks/php-oop",
+    "require": {
+        "twig/twig": "^2.5"
+    },
+    "authors": [
+        {
+            "name": "Fraksik",
+            "email": "fraks@list.ru"
+        }
+    ]
+}

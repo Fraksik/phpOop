@@ -13,4 +13,3 @@ if(class_exists($controllerClass)){
 	$controller = new $controllerClass;
 	$controller->run($actionName);
 }
-
