@@ -28,9 +28,9 @@ abstract class DataModel implements IModel
 
 		foreach($this as $key=>$value) {
 			if (in_array($key, $tableCols)) {
-				array_push($columns, $key);
+				$columns[] = $key;
+				$params[] = ":$key";
 				$values[$key] = $value;
-				array_push($params, ":$key");
 			}
 
 		}
@@ -83,7 +83,7 @@ abstract class DataModel implements IModel
 		$sqlArr = [];
 
 		foreach ($this->change as $key => $data) {
-			array_push($sqlArr, "$key = '$data'");
+			$sqlArr[] = "$key = '$data'";
 		}
 		$sql .= implode(", ", $sqlArr) . " where id = {$this->id}";
 
@@ -107,10 +107,6 @@ abstract class DataModel implements IModel
 		$this->db->execute($sql, [':id' => $this->id]);
 	}
 
-	public function show() {
-		var_dump($this);
-	}
-
 	public static function getCartCost($userId) {
 		$sql = "SELECT * FROM cart WHERE userId = :userId";
 		$res = DB::getInstance()->queryAll($sql, [':userId' => $userId]);
@@ -127,7 +123,7 @@ abstract class DataModel implements IModel
 		$res = $this->db->queryAll($sql, []);
 		$arr = [];
 		foreach ($res as $col) {
-			array_push($arr, $col['Field']);
+			$arr[] = $col['Field'];
 		}
 		return $arr;
 	}

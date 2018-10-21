@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 
-abstract class ControllersModel
+abstract class Controllers
 {
 	protected $action;
 	protected $defaultAction = 'index';

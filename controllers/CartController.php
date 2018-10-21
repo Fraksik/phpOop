@@ -5,7 +5,7 @@ namespace app\controllers;
 
 use app\models\Cart;
 
-class CartController extends ControllersModel
+class CartController extends Controllers
 {
 	protected $layout = "main";
 

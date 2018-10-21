@@ -6,7 +6,7 @@ namespace app\controllers;
 
 use app\models\Product;
 
-class ProductController extends ControllersModel
+class ProductController extends Controllers
 {
 	protected $layout = "main";
 
