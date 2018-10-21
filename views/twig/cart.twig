@@ -1,0 +1,17 @@
+{% extends "layouts/main.twig" %}
+{% block content %}
+
+<div class="cart">
+    <p>Корзина:</p>
+    {% for product in cart %}
+    <div class="cart_position">
+        <p><b>id продукта {{ product.productId }}</b> - {{ product.count }} шт. - цена/шт
+            {{ product.cost }} руб.</p>
+        </div>
+    {% endfor %}
+    <p>Общая стоимость: {{ cost }} руб.</p>
+	<br>
+	<a href="index.php?c=product">Каталог</a>
+</div>
+
+{% endblock %}

@@ -10,7 +10,7 @@ abstract class Controllers
 	protected $action;
 	protected $defaultAction = 'index';
 	protected $layout = "main";
-	protected $useLayout = true;
+	protected $useLayout = false;
 	private $renderer = null;
 
 	public function __construct(IRenderer $renderer)

@@ -143,4 +143,13 @@ abstract class DataModel implements IModel
 		}
 	}
 
+	public function __isset($name)
+	{
+		if (property_exists($this, $name)) {
+			return true;
+		}
+
+		return false;
+	}
+
 }
