@@ -12,6 +12,6 @@ $controllerClass = CONTROLLERS_NAMESPACE . "\\" . ucfirst($controllerName) . "Co
 $twigRenderer = new TwigRenderer(new Twig_Environment(new Twig_Loader_Filesystem(TWIG_TEMPLATES_DIR)));
 
 if(class_exists($controllerClass)){
-	$controller = new $controllerClass($twigRenderer);
+	$controller = new $controllerClass($twigRenderer, false);
 	$controller->run($actionName);
 }

@@ -10,12 +10,13 @@ abstract class Controllers
 	protected $action;
 	protected $defaultAction = 'index';
 	protected $layout = "main";
-	protected $useLayout = false;
+	protected $useLayout;
 	private $renderer = null;
 
-	public function __construct(IRenderer $renderer)
+	public function __construct(IRenderer $renderer, $useLayout = true)
 	{
 		$this->renderer = $renderer;
+		$this->useLayout = $useLayout;
 	}
 
 
