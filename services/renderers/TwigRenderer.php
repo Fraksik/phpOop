@@ -2,15 +2,14 @@
 
 namespace app\services\renderers;
 
-
 class TwigRenderer implements IRenderer
 {
 
 	private $twig;
 
-	public function __construct(\Twig_Environment $twig)
+	public function __construct()
 	{
-		$this->twig = $twig;
+		$this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(TWIG_TEMPLATES_DIR));
 	}
 
 	public function render($template, $params = [])
