@@ -8,7 +8,6 @@ use app\services\DB;
 abstract class Repository implements IRepository
 {
 	protected $db;
-	private $change = [];
 
 	public function __construct()
 	{
@@ -42,6 +41,7 @@ abstract class Repository implements IRepository
 	{
 		$table = $this->getTableName();
 		$sql = "SELECT * FROM {$table} WHERE id = :id";
+
 		return static::getDb()->queryOneAsObj($sql, $this->getEntityClass(), [':id' => $id]);
 	}
 
@@ -55,15 +55,19 @@ abstract class Repository implements IRepository
 	public function update(DataEntity $entity)
 	{
 		$table = $this->getTableName();
-		$arr = $this->getValues();
+		$arr = $this->getValues($entity);
 		$values = $arr['values'];
+		$change = $this->getOneArr($entity->id);
 
 		$sql = "update {$table} set ";
 		$sqlArr = [];
 
-		foreach ($this->change as $key => $data) {
-			$sqlArr[] = "$key = '$data'";
+		foreach ($entity as $key => $data) {
+			if($change[$key] != $data) {
+				$sqlArr[] = "$key = '$data'";
+			}
 		}
+
 		$sql .= implode(", ", $sqlArr) . " where id = {$entity->id}";
 
 		$this->db->execute($sql, $values);
@@ -77,7 +81,7 @@ abstract class Repository implements IRepository
 		$this->db->execute($sql, [':id' => $entity->id]);
 	}
 
-	private function getValues (DataEntity $entity)
+	private function getValues(DataEntity $entity)
 	{
 		$tableCols = $this->getColumns();
 
@@ -86,8 +90,9 @@ abstract class Repository implements IRepository
 		$params = [];
 		$values = [];
 
-		foreach($entity as $key=>$value) {
-			if (in_array($key, $tableCols)) {
+		foreach($entity as $key => $value) {
+			if (in_array($key, $tableCols))
+			{
 				$columns[] = $key;
 				$params[] = ":$key";
 				$values[$key] = $value;
@@ -113,6 +118,13 @@ abstract class Repository implements IRepository
 			$arr[] = $col['Field'];
 		}
 		return $arr;
+	}
+
+	private function getOneArr($id) {
+		$table = $this->getTableName();
+		$sql = "SELECT * FROM {$table} WHERE id = :id";
+
+		return static::getDb()->queryOne($sql, [':id' => $id]);
 	}
 
 	protected static function getDb(){

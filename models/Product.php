@@ -4,11 +4,11 @@ namespace app\models;
 
 class Product extends DataEntity
 {
-	protected $id;
-	protected $name;
-	protected $description;
-	protected $price;
-	protected $producerID;
+	public $id;
+	public $name;
+	public $description;
+	public $price;
+	public $producerID;
 
 	public function __construct($name, $description, $price, $producerID)
 	{
@@ -17,4 +17,5 @@ class Product extends DataEntity
 		$this->price = $price;
 		$this->producerID = $producerID;
 	}
+
 }

@@ -4,11 +4,11 @@ namespace app\models;
 
 class Cart extends DataEntity
 {
-	protected $id;
-	protected $userId;
-	protected $productId;
-	protected $count;
-	protected $cost;
+	public $id;
+	public $userId;
+	public $productId;
+	public $count;
+	public $cost;
 
 	public function __construct($userId, $productId, $count, $cost)
 	{

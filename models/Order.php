@@ -4,11 +4,11 @@ namespace app\models;
 
 class Order extends DataEntity
 {
-	protected $id;
-	protected $userId;
-	protected $cost;
-	protected $status;
-	protected $date;
+	public $id;
+	public $userId;
+	public $cost;
+	public $status;
+	public $date;
 
 	public function __construct($userId, $cost)
 	{

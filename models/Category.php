@@ -4,9 +4,9 @@ namespace app\models;
 
 class Category extends DataEntity
 {
-	protected $id;
-	protected $name;
-	protected $description;
+	public $id;
+	public $name;
+	public $description;
 
 	public function __construct($name, $description)
 	{

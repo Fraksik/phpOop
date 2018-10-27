@@ -47,7 +47,7 @@ class DB
 	public function queryAllAsObj(string $sql, $className, array $params = []) {
 		$arr = [];
 		$res = $this->query($sql, $params)->fetchAll();
-		foreach ($res as $number =>$obj) {
+		foreach ($res as $number => $obj) {
 			$properties = [];
 			foreach ($obj as $key => $value) {
 				if ($key != 'id') {
