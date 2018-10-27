@@ -81,7 +81,7 @@ abstract class Repository implements IRepository
 		$this->db->execute($sql, [':id' => $entity->id]);
 	}
 
-	private function getValues(DataEntity $entity)
+	protected function getValues(DataEntity $entity)
 	{
 		$tableCols = $this->getColumns();
 

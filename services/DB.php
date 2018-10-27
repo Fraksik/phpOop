@@ -63,7 +63,11 @@ class DB
 	}
 
 	public function queryOneAsObj(string $sql, $className, array $params = []) {
-		return $this->queryAllAsObj($sql,$className, $params)[0];
+		$res = $this->queryAllAsObj($sql,$className, $params);
+		if (empty($res)) {
+			return null;
+		}
+		return $res[0];
 	}
 
 	public function queryAll(string $sql, array $params = [])
@@ -73,7 +77,11 @@ class DB
 
 	public function queryOne(string $sql, array $params = [])
 	{
-		return $this->queryAll($sql, $params)[0];
+		$res = $this->queryAll($sql, $params);
+		if (empty($res)) {
+			return null;
+		}
+		return $res[0];
 	}
 
 	private function prepareDsnString(): string

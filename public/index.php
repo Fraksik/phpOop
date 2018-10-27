@@ -3,12 +3,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/../vendor/autoload.php";
 
 use app\services\renderers\TemplateRenderer;
 
-$controllerName = isset($_GET['c']) ? $_GET['c'] : DEFAULT_CONTROLLER;
-$actionName = isset($_GET['a']) ? $_GET['a'] : null;
+$request = new \app\services\Request();
 
-$controllerClass = CONTROLLERS_NAMESPACE . "\\" . ucfirst($controllerName) . "Controller";
+$controllerClass = $request->getControllerClass();
+$actionName = $request->getActionName();
 
-if(class_exists($controllerClass)){
-	$controller = new $controllerClass(new TemplateRenderer());
-	$controller -> run($actionName);
-}
+$controller = new $controllerClass(new TemplateRenderer());
+$controller->run($actionName);

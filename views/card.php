@@ -6,4 +6,4 @@
 </div>
 
 <br>
-<a href="index.php?c=product">Каталог</a>
+<a href="/product">Каталог</a>

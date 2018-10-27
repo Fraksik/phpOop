@@ -10,7 +10,7 @@ class Cart extends DataEntity
 	public $count;
 	public $cost;
 
-	public function __construct($userId, $productId, $count, $cost)
+	public function __construct($productId, $cost, $count = 1, $userId = 1)
 	{
 		$this->userId = $userId;
 		$this->productId = $productId;

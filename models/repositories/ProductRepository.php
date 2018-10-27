@@ -15,4 +15,12 @@ class ProductRepository extends Repository
 	{
 		return Product::class;
 	}
+
+	public function getPrice($id) {
+		$sql = "SELECT price FROM product where id = :id";
+		$res = static::getDb()->queryOne($sql, [':id' => $id]);
+		return $res['price'];
+	}
+
+
 }

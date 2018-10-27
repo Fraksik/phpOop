@@ -48,10 +48,15 @@
 .cart_position {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	margin: 10px;
-	width: 330px;
+	width: 500px;
 	border-bottom: 1px solid black;
+	padding-right: 10px;
 }
 .cart_position p {
 	margin-right: 20px;
+}
+.cart_button {
+
 }
