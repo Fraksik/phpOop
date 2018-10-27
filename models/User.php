@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-class User extends DataModel
+class User extends DataEntity
 {
 	protected $id;
 	protected $userName;
@@ -11,15 +11,8 @@ class User extends DataModel
 
 	public function __construct($name, $pass, $role=2)
 	{
-		parent::__construct();
 		$this->userName = $name;
 		$this->userPass = $pass;
 		$this->userRole = $role;
 	}
-
-	protected static function getTableName()
-	{
-		return 'user';
-	}
-
 }

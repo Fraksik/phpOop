@@ -2,8 +2,7 @@
 
 namespace app\models;
 
-
-class Cart extends DataModel
+class Cart extends DataEntity
 {
 	protected $id;
 	protected $userId;
@@ -13,16 +12,10 @@ class Cart extends DataModel
 
 	public function __construct($userId, $productId, $count, $cost)
 	{
-		parent::__construct();
 		$this->userId = $userId;
 		$this->productId = $productId;
 		$this->count = $count;
 		$this->cost = $cost;
-	}
-
-	protected static function getTableName()
-	{
-		return 'cart';
 	}
 
 }
