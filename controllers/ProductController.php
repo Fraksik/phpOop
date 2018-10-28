@@ -2,30 +2,40 @@
 
 namespace app\controllers;
 
+use app\base\App;
 use app\models\Cart;
 use app\models\repositories\CartRepository;
 use app\models\repositories\ProductRepository;
-use app\services\Request;
+use app\services\renderers\IRenderer;
 
 class ProductController extends Controllers
 {
+	private $request;
+	private $productRepository;
 
-    public function actionIndex()
+	public function __construct(IRenderer $renderer, $useLayout = true)
+	{
+		parent::__construct($renderer, $useLayout);
+		$this->request = App::call()->request;
+		$this->productRepository = new ProductRepository();
+	}
+
+	public function actionIndex()
     {
-	    $model = (new ProductRepository())->getAll();
+	    $model = $this->productRepository->getAll();
 	    echo $this->render("catalog", ['model' => $model]);
     }
 
     public function actionCard()
     {
-        $id = (new Request())->get('id');
-        $model = (new ProductRepository())->getOne($id);
+        $id = $this->request->get('id');
+        $model = $this->productRepository->getOne($id);
         echo $this->render("card", ['model' => $model]);
     }
 
     public function actionAdd() {
-	    $id = (new Request())->get('id');
-	    $price = (new ProductRepository())->getPrice($id);
+	    $id = $this->request->get('id');
+	    $price = $this->productRepository->getPrice($id);
 	    (new CartRepository())->save(new Cart($id, $price));
 
 	    header("Location: /product");

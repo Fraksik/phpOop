@@ -8,11 +8,12 @@ class Request
 	private $controllerName;
 	private $actionName;
 	private $params;
-
+	private $requestMethod;
 
 	public function __construct()
 	{
 		$this->requestString = $_SERVER['REQUEST_URI'];
+		$this->requestMethod = $_SERVER['REQUEST_METHOD'];
 		$this->parseRequest();
 	}
 
@@ -24,26 +25,17 @@ class Request
 			$this->actionName = $matches['action'][0];
 			$this->params['get'] = $_GET;
 			$this->params['post'] = $_POST;
-
-		} else {
-			$this->controllerName = DEFAULT_CONTROLLER;
-			$this->actionName = null;
+		}else{
+			throw new \Exception("Неправильный запрос");
 		}
 	}
 
-	public function getControllerClass()
+	public function getControllerName()
 	{
-		$controllerClass = CONTROLLERS_NAMESPACE . "\\" . ucfirst($this->controllerName) . "Controller";
-		if (class_exists($controllerClass)) {
-			return $controllerClass;
-		} else {
-			return CONTROLLERS_NAMESPACE . "\\" . ucfirst(DEFAULT_CONTROLLER) . "Controller";
-		}
-
+		return $this->controllerName;
 	}
 
-	public function getActionName()
-	{
+	public function getActionName(){
 		return $this->actionName;
 	}
 
@@ -66,5 +58,20 @@ class Request
 			return $this->params['post'][$name];
 		}
 		return null;
+	}
+
+	public function getRequestMethod()
+	{
+		return $this->requestMethod;
+	}
+
+	public function isGet()
+	{
+		return $this->requestMethod == "GET";
+	}
+
+	public function isPost()
+	{
+		return $this->requestMethod == "POST";
 	}
 }

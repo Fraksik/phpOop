@@ -18,7 +18,7 @@ class ProductRepository extends Repository
 
 	public function getPrice($id) {
 		$sql = "SELECT price FROM product where id = :id";
-		$res = static::getDb()->queryOne($sql, [':id' => $id]);
+		$res = $this->db->queryOne($sql, [':id' => $id]);
 		return $res['price'];
 	}
 

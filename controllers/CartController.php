@@ -2,34 +2,52 @@
 
 namespace app\controllers;
 
+use app\base\App;
+use app\models\Cart;
 use app\models\repositories\CartRepository;
-use app\services\Request;
+use app\services\renderers\IRenderer;
 
 class CartController extends Controllers
 {
+	private $request;
+	private $cartRepository;
+
+	public function __construct(IRenderer $renderer, $useLayout = true)
+	{
+		parent::__construct($renderer, $useLayout);
+		$this->request = App::call()->request;
+		$this->cartRepository = new CartRepository();
+	}
+
 	public function actionIndex()
 	{
-		$cart = (new CartRepository())->getAll();
-		$cost = (new CartRepository())->getCartCost(1);
-		echo $this->render("cart", ['cart' => $cart, 'cost' => $cost]);
+		$cart = $this->cartRepository->getAll();
+//		$cost = $this->cartRepository->getCartCost(1);
+		echo $this->render("cart", ['cart' => $cart]);
+	}
+
+	public function actionAdd() {
+		$id = $this->request->post('id');
+		(new CartRepository())->save(new Cart($id));
+		header("Location: /cart");
 	}
 
 	public function actionDelete()
 	{
-		$id = (new Request())->get('id');
-		$cart = (new CartRepository())->getOne($id);
-		(new CartRepository())->delete($cart);
+		$id = $this->request->post('id');
+		$cart = $this->cartRepository->getOne($id);
+		$this->cartRepository->delete($cart);
 
 		header("Location: /cart");
 	}
 
 	public function actionDeleteAll()
 	{
-		$drop = (new Request())->post('drop_basket');
-		$order = (new Request())->post('order');
-		$userId = (new Request())->post('userId');
+		$drop = $this->request->post('drop_basket');
+		$order = $this->request->post('order');
+		$userId = $this->request->post('userId');
 		if (isset($drop)) {
-			(new CartRepository())->deleteAll($userId);
+			$this->cartRepository->deleteAll($userId);
 			header("Location: /cart");
 		}
 	}

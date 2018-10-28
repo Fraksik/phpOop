@@ -2,8 +2,8 @@
 
 namespace app\models\repositories;
 
+use app\base\App;
 use app\models\DataEntity;
-use app\services\DB;
 
 abstract class Repository implements IRepository
 {
@@ -11,7 +11,7 @@ abstract class Repository implements IRepository
 
 	public function __construct()
 	{
-		$this->db = static::getDb();
+		$this->db = App::call()->db;
 	}
 
 	public function save(DataEntity $entity)
@@ -42,14 +42,14 @@ abstract class Repository implements IRepository
 		$table = $this->getTableName();
 		$sql = "SELECT * FROM {$table} WHERE id = :id";
 
-		return static::getDb()->queryOneAsObj($sql, $this->getEntityClass(), [':id' => $id]);
+		return $this->db->queryOneAsObj($sql, $this->getEntityClass(), [':id' => $id]);
 	}
 
 	public function getAll()
 	{
 		$table = $this->getTableName();
 		$sql = "SELECT * FROM {$table}";
-		return static::getDb()->queryAllAsObj($sql, $this->getEntityClass(), []);
+		return $this->db->queryAllAsObj($sql, $this->getEntityClass(), []);
 	}
 
 	public function update(DataEntity $entity)
@@ -124,11 +124,7 @@ abstract class Repository implements IRepository
 		$table = $this->getTableName();
 		$sql = "SELECT * FROM {$table} WHERE id = :id";
 
-		return static::getDb()->queryOne($sql, [':id' => $id]);
-	}
-
-	protected static function getDb(){
-		return Db::getInstance();
+		return $this->db->queryOne($sql, [':id' => $id]);
 	}
 
 }

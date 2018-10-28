@@ -18,8 +18,8 @@ class CartRepository extends Repository
 	}
 
 	public function getCartCost($userId) {
-		$sql = "SELECT * FROM cart WHERE userId = :userId";
-		$res = Repository::getDb()->queryAll($sql, [':userId' => $userId]);
+		$sql = "SELECT * FROM {$this->getTableName()} WHERE userId = :userId";
+		$res = $this->db->queryAll($sql, [':userId' => $userId]);
 		$cost = 0;
 		foreach ($res as $product) {
 			$cost+= $product['count'] * $product['cost'];
@@ -39,17 +39,18 @@ class CartRepository extends Repository
 	}
 
 	public function getOneByEntity($entity) {
-		$sql = "SELECT * FROM cart where productID =:productID and userID =:userID";
-		$res = static::getDb()->queryOneAsObj($sql, $this->getEntityClass(), [
-			'productID' => $entity->productId,
-			'userID' => $entity->userId
+		$table = $this->getTableName();
+		$sql = "SELECT * FROM {$table} WHERE productId =:productId AND userId =:userId";
+		$res = $this->db->queryOneAsObj($sql, $this->getEntityClass(), [
+			'productId' => $entity->productId,
+			'userId' => $entity->userId
 		]);
 		return $res;
 	}
 
 	public function update(DataEntity $entity)
 	{
-		$sql = "UPDATE cart SET count = :count WHERE productID = :productID AND userID = :userID";
+		$sql = "UPDATE {$this->getTableName()} SET count = :count WHERE productID = :productID AND userID = :userID";
 
 		$this->db->execute($sql, [
 			'productID' => $entity->productId,
@@ -65,15 +66,25 @@ class CartRepository extends Repository
 			$inCart->count -= 1;
 			(new CartRepository())->update($inCart);
 		} else {
-			$sql = "delete from cart where id = :id";
+			$sql = "delete from {$this->getTableName()} where id = :id";
 			$this->db->execute($sql, [':id' => $entity->id]);
 		}
 	}
 
 	public function deleteAll($userId)
 	{
-		$sql = "delete from cart where userId = :userId";
+		$sql = "delete from {$this->getTableName()} where userId = :userId";
 		$this->db->execute($sql, [':userId' => $userId]);
+	}
+
+	public function getAll()
+	{
+		$table = $this->getTableName();
+		$sql = "SELECT 
+				{$table}.id AS cart_id, {$table}.count, 
+				product.* 
+				FROM {$table} INNER JOIN product ON {$table}.productId = product.id";
+		return $this->db->queryAll($sql, []);
 	}
 
 }
