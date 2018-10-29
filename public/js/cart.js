@@ -91,3 +91,20 @@ $(function () {
 		       })
 	})
 });
+
+$(function () {
+	$("#make_order").on('click', function () {
+		$.ajax({
+			       url : "cart/order",
+			       type: "POST",
+			       data: {},
+			       success : function (response) {
+				       response = JSON.parse(response);
+				       if(response.success === 'ok'){
+					       $("#cart_table").empty();
+					       $("#cart_cost").text(0);
+				       }
+			       }
+		       })
+	})
+});

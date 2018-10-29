@@ -6,15 +6,13 @@ class Order extends DataEntity
 {
 	public $id;
 	public $userId;
-	public $cost;
 	public $status;
 	public $date;
 
-	public function __construct($userId, $cost)
+	public function __construct($userId = 1)
 	{
 		$this->userId = $userId;
-		$this->cost = $cost;
 		$this->status = 'new';
-		$this->date = date('H:m d-m-Y');
+		$this->date = date('Y-m-d H:m');
 	}
 }

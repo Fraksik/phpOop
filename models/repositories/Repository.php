@@ -25,6 +25,7 @@ abstract class Repository implements IRepository
 
 	public function create(DataEntity $entity)
 	{
+
 		$table = $this->getTableName();
 		$arr = $this->getValues($entity);
 		$columns = $arr['columns'];

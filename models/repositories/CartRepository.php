@@ -39,7 +39,7 @@ class CartRepository extends Repository
 
 	public function getOneByEntity($entity) {
 		$table = $this->getTableName();
-		$sql = "SELECT * FROM {$table} WHERE productId =:productId AND userId =:userId";
+		$sql = "SELECT * FROM {$table} WHERE productId =:productId AND userId =:userId AND {$table}.orderId IS NULL";
 		$res = $this->db->queryOneAsObj($sql, $this->getEntityClass(), [
 			'productId' => $entity->productId,
 			'userId' => $entity->userId
@@ -72,7 +72,8 @@ class CartRepository extends Repository
 
 	public function deleteAll()
 	{
-		$sql = "delete from {$this->getTableName()}";
+		$table = $this->getTableName();
+		$sql = "delete from {$table} WHERE {$table}.orderId IS NULL";
 		$this->db->execute($sql, []);
 	}
 
@@ -82,8 +83,16 @@ class CartRepository extends Repository
 		$sql = "SELECT 
 				{$table}.id AS cart_id, {$table}.count, 
 				product.* 
-				FROM {$table} INNER JOIN product ON {$table}.productId = product.id";
+				FROM {$table} INNER JOIN product ON {$table}.productId = product.id
+				WHERE {$table}.orderId IS NULL";
 		return $this->db->queryAll($sql, []);
+	}
+
+	public function setOrder($order)
+	{
+		$table = $this->getTableName();
+		$sql = "UPDATE {$table} SET orderId = $order WHERE orderId IS NULL";
+		$this->db->execute($sql, []);
 	}
 
 }

@@ -4,19 +4,25 @@ namespace app\controllers;
 
 use app\base\App;
 use app\models\Cart;
+use app\models\Order;
 use app\models\repositories\CartRepository;
+use app\models\repositories\OrderRepository;
 use app\services\renderers\IRenderer;
 
 class CartController extends Controllers
 {
 	private $request;
 	private $cartRepository;
+	private $orderRepository;
+	private $order;
 
 	public function __construct(IRenderer $renderer, $useLayout = true)
 	{
 		parent::__construct($renderer, $useLayout);
 		$this->request = App::call()->request;
 		$this->cartRepository = new CartRepository();
+		$this->orderRepository = new OrderRepository();
+		$this->order = new Order();
 	}
 
 	public function actionIndex()
@@ -28,7 +34,7 @@ class CartController extends Controllers
 
 	public function actionAdd() {
 		$id = $this->request->post('id');
-		(new CartRepository())->save(new Cart($id));
+		($this->cartRepository)->save(new Cart($id));
 		echo json_encode(['success' => 'ok']);
 	}
 
@@ -44,5 +50,11 @@ class CartController extends Controllers
 	{
 		echo json_encode(['success' => 'ok']);
 		$this->cartRepository->deleteAll();
+	}
+
+	public function actionOrder()
+	{
+		echo json_encode(['success' => 'ok']);
+		($this->orderRepository)->create($this->order);
 	}
 }
