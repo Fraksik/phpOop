@@ -1,7 +1,8 @@
 {
     "name": "fraks/php-oop",
     "require": {
-        "twig/twig": "^2.5"
+        "twig/twig": "^2.5",
+        "ext-json": "^1.5"
     },
     "autoload": {
       "psr-4": {

@@ -17,14 +17,13 @@ class CartRepository extends Repository
 		return Cart::class;
 	}
 
-	public function getCartCost($userId) {
-		$sql = "SELECT * FROM {$this->getTableName()} WHERE userId = :userId";
-		$res = $this->db->queryAll($sql, [':userId' => $userId]);
-		$cost = 0;
-		foreach ($res as $product) {
-			$cost+= $product['count'] * $product['cost'];
+	public function getCartCost() {
+		$cart = $this->getAll();
+		$totalCost = 0;
+		foreach ($cart as $product) {
+			$totalCost += $product['count'] * $product['price'];
 		}
-		return $cost;
+		return $totalCost;
 	}
 
 	public function save(DataEntity $entity) {
@@ -71,10 +70,10 @@ class CartRepository extends Repository
 		}
 	}
 
-	public function deleteAll($userId)
+	public function deleteAll()
 	{
-		$sql = "delete from {$this->getTableName()} where userId = :userId";
-		$this->db->execute($sql, [':userId' => $userId]);
+		$sql = "delete from {$this->getTableName()}";
+		$this->db->execute($sql, []);
 	}
 
 	public function getAll()

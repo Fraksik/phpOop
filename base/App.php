@@ -2,6 +2,7 @@
 
 namespace app\base;
 
+use app\controllers\ProductController;
 use app\traits\TSingleton;
 
 class App
@@ -26,7 +27,7 @@ class App
 
 	private function runController()
 	{
-		$controllerName = $this->request->getControllerName() ?? $this->config['defaultController'];
+		$controllerName = $this->request->getControllerName() ?: $this->config['defaultController'];
 		$actionName = $this->request->getActionName();
 		$controllerClass = $this->config['controllerNamespace'] . "\\" . ucfirst($controllerName) . "Controller";
 
@@ -40,7 +41,10 @@ class App
 
 			}
 		} else {
-			echo "404";
+			$controller = new ProductController(
+				new \app\services\renderers\TemplateRenderer()
+			);
+			$controller->run($actionName);
 		}
 	}
 

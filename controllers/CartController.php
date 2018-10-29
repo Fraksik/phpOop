@@ -22,33 +22,27 @@ class CartController extends Controllers
 	public function actionIndex()
 	{
 		$cart = $this->cartRepository->getAll();
-//		$cost = $this->cartRepository->getCartCost(1);
-		echo $this->render("cart", ['cart' => $cart]);
+		$cost = $this->cartRepository->getCartCost(1);
+		echo $this->render("cart", ['cart' => $cart, 'cost' => $cost]);
 	}
 
 	public function actionAdd() {
 		$id = $this->request->post('id');
 		(new CartRepository())->save(new Cart($id));
-		header("Location: /cart");
+		echo json_encode(['success' => 'ok']);
 	}
 
 	public function actionDelete()
 	{
-		$id = $this->request->post('id');
+		$id = $this->request->post('cart_id');
 		$cart = $this->cartRepository->getOne($id);
 		$this->cartRepository->delete($cart);
-
-		header("Location: /cart");
+		echo json_encode(['success' => 'ok']);
 	}
 
-	public function actionDeleteAll()
+	public function actionDrop()
 	{
-		$drop = $this->request->post('drop_basket');
-		$order = $this->request->post('order');
-		$userId = $this->request->post('userId');
-		if (isset($drop)) {
-			$this->cartRepository->deleteAll($userId);
-			header("Location: /cart");
-		}
+		echo json_encode(['success' => 'ok']);
+		$this->cartRepository->deleteAll();
 	}
 }

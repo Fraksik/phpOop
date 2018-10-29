@@ -6,13 +6,12 @@
 		<h2><a href="<?= "product/card?id={$product->id}" ?>"><?=$product->name?></a></h2>
 		<p><i> <?=$product->description?></i></p>
 		<p><?=$product->price?> руб.</p>
-		<form action="/product/add" method="get">
-	        <input type="hidden" value="<?=$product->id?>" name="id">
-	        <input type="submit" value="В корзину" class="catalog_button">
-		</form>
+		<button data-id="<?=$product->id?>" class="catalog_add">В корзину</button>
 	</div>
 <?php endforeach;?>
 </div>
 <br>
 <a href="/cart">Корзина</a>
 <br>
+
+<script src="/js/cart.js"></script>

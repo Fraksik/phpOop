@@ -3,8 +3,6 @@
 namespace app\controllers;
 
 use app\base\App;
-use app\models\Cart;
-use app\models\repositories\CartRepository;
 use app\models\repositories\ProductRepository;
 use app\services\renderers\IRenderer;
 
@@ -31,14 +29,6 @@ class ProductController extends Controllers
         $id = $this->request->get('id');
         $model = $this->productRepository->getOne($id);
         echo $this->render("card", ['model' => $model]);
-    }
-
-    public function actionAdd() {
-	    $id = $this->request->get('id');
-	    $price = $this->productRepository->getPrice($id);
-	    (new CartRepository())->save(new Cart($id, $price));
-
-	    header("Location: /product");
     }
 
 }
