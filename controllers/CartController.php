@@ -57,4 +57,13 @@ class CartController extends Controllers
 		echo json_encode(['success' => 'ok']);
 		($this->orderRepository)->create($this->order);
 	}
+
+	public function actionShowOrder()
+	{
+		$id = $this->request->post('id');
+		$cart = $this->cartRepository->getOrder($id);
+		$cost = $this->cartRepository->getOrderCost($id);
+		echo $this->render("cart_order", ['cart' => $cart, 'cost' => $cost]);
+
+	}
 }

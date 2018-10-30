@@ -2,6 +2,7 @@
 
 namespace app\base;
 
+use app\controllers\EmptyController;
 use app\controllers\ProductController;
 use app\traits\TSingleton;
 
@@ -35,14 +36,11 @@ class App
 			$controller = new $controllerClass(
 				new \app\services\renderers\TemplateRenderer()
 			);
-			try {
-				$controller->run($actionName);
-			} catch (\Exception $e) {
+			$controller->run($actionName);
 
-			}
 		} else {
-			$controller = new ProductController(
-				new \app\services\renderers\TemplateRenderer()
+			$controller = new EmptyController(
+				new \app\services\renderers\TemplateRenderer(), false
 			);
 			$controller->run($actionName);
 		}

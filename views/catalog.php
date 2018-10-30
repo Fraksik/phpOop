@@ -1,5 +1,9 @@
 <?php /** @var \app\models\Product $model */ ?>
 
+<a href="/product">Каталог</a><br>
+<a href="/cart">Корзина</a><br>
+<a href="/orders">Заказы</a><br><br>
+
 <div class="catalog">
 <?php foreach ($model as $product): ?>
 	<div class="product">
@@ -10,8 +14,5 @@
 	</div>
 <?php endforeach;?>
 </div>
-<br>
-<a href="/cart">Корзина</a>
-<br>
 
 <script src="/js/cart.js"></script>

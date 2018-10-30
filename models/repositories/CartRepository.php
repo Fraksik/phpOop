@@ -95,4 +95,24 @@ class CartRepository extends Repository
 		$this->db->execute($sql, []);
 	}
 
+	public function getOrder($orderId)
+	{
+		$table = $this->getTableName();
+		$sql = "SELECT 
+				{$table}.id AS cart_id, {$table}.count, {$table}.orderId,
+				product.* 
+				FROM {$table} INNER JOIN product ON {$table}.productId = product.id
+				WHERE {$table}.orderId =:orderId";
+		return $this->db->queryAll($sql, [':orderId' => $orderId]);
+	}
+
+	public function getOrderCost($orderId) {
+		$cart = $this->getOrder($orderId);
+		$totalCost = 0;
+		foreach ($cart as $product) {
+			$totalCost += $product['count'] * $product['price'];
+		}
+		return $totalCost;
+	}
+
 }

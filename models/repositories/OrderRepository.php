@@ -22,4 +22,19 @@ class OrderRepository extends Repository
 		parent::create($entity);
 		(new CartRepository())->setOrder($entity->id);
 	}
+
+	public function getUserOrders($userId)
+	{
+		$table = $this->getTableName();
+		$sql = "SELECT * FROM {$table} WHERE userId = :userId";
+		return $this->db->queryAllAsObj($sql, $this->getEntityClass(), ['userId' => $userId]);
+	}
+
+	public function cancelOrder($id)
+	{
+		$table = $this->getTableName();
+		$sql = "UPDATE {$table} SET status = 'canceled' WHERE id = :id";
+		$this->db->execute($sql, ['id' => $id]);
+	}
+
 }
