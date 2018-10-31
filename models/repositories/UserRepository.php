@@ -15,4 +15,16 @@ class UserRepository extends Repository
 	{
 		return User::class;
 	}
+
+	public function findUser($login, $pass)
+	{
+		// TODO доделать проверку пользователя
+	}
+
+	public function matchLogin($login)
+	{
+		$table =$this->getTableName();
+		$sql = "select id from {$table} where login=:login";
+		return $this->db->queryAll($sql, ['login' => $login]);;
+	}
 }

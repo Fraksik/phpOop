@@ -15,4 +15,26 @@ class User extends DataEntity
 		$this->userPass = $pass;
 		$this->userRole = $role;
 	}
+
+	public static function testData($data)
+	{
+		$empty = User::testEmptyData($data);
+		if ($empty) {
+			return $empty;
+		}
+
+	}
+
+	private static function testEmptyData($arr)
+	{
+		foreach ($arr as $key => $value) {
+			if ($value == '') {
+				return "Все поля должны быть заполнены!";
+			}
+		}
+		return false;
+	}
+
+
+
 }

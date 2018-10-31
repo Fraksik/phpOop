@@ -57,7 +57,7 @@ class CartRepository extends Repository
 			$this->update($inCart);
 		} else {
 			$sql = "delete from {$this->getTableName()} where id = :id";
-			$this->db->execute($sql, [':id' => $entity->id]);
+			$this->db->execute($sql, ['id' => $entity->id]);
 		}
 	}
 

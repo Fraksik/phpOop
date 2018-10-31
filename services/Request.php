@@ -39,9 +39,12 @@ class Request
 		return $this->actionName;
 	}
 
-	public function getParams()
+	public function getParams($method = null)
 	{
-		return $this->params;
+		if(is_null($method)) {
+			return $this->params;
+		}
+		return $this->params[$method];
 	}
 
 	public function get($name)

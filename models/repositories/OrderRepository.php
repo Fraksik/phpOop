@@ -12,6 +12,7 @@ class OrderRepository extends Repository
 
 	public function __construct()
 	{
+		parent::__construct();
 		$this->cartRepository = new CartRepository();
 	}
 

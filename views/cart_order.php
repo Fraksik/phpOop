@@ -1,5 +1,6 @@
 <?php /** @var \app\models\Cart $cart */?>
 
+<a href="/login">Авторизация</a><br>
 <a href="/product">Каталог</a><br>
 <a href="/cart">Корзина</a><br>
 <a href="/orders">Заказы</a><br><br>

@@ -76,3 +76,47 @@
 .orders_status_field {
 	width: 140px;
 }
+
+.login_container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 500px;
+}
+.login_check_in {
+	display: flex;
+	flex-direction: column;
+	margin: 0 auto;
+}
+.login_field {
+	margin-bottom: 10px;
+}
+#login_login {
+	margin-left: 8px;
+}
+
+.reg_registration {
+	margin: 20px;
+}
+#reg_login {
+	margin-left: 82px;
+}
+#reg_pass {
+	margin-left: 74px;
+}
+
+#reg_user {
+	margin-left: 94px;
+}
+.reg_field {
+	margin-bottom: 5px;
+}
+.reg_warning {
+	font-size: 12px;
+	color: red;
+}
+.reg_warning b {
+	font-size: 14px;
+	color: black;
+}
+
