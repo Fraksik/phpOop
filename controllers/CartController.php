@@ -12,6 +12,8 @@ class CartController extends Controllers
 	private $request;
 	private $session;
 	private $cartRepository;
+	private $userId;
+
 
 	public function __construct(IRenderer $renderer, $useLayout = true)
 	{
@@ -19,32 +21,40 @@ class CartController extends Controllers
 		$this->request = App::call()->request;
 		$this->session = App::call()->session;
 		$this->cartRepository = new CartRepository();
-
+		$this->userId = $this->session->get('userId');
 	}
 
 	public function actionIndex()
 	{
 		$cart = null;
 		$cost = 0;
+
 		// TODO доделать подгрузку товаров из сессии
 
-		$userId = $this->session->get('userId');
-		if (!is_null($userId)) {
-			$cart = $this->cartRepository->getAllByUser($userId);
-			$cost = Cart::getCartCost($userId);
+		if (!is_null($this->userId)) {
+			$cart = $this->cartRepository->getAllByUser($this->userId);
+			$cost = Cart::getCartCost($this->userId);
 		}
 		echo $this->render("cart", ['cart' => $cart, 'cost' => $cost]);
 	}
 
 	public function actionAdd() {
 		$id = $this->request->post('id');
-		($this->cartRepository)->save(new Cart($id));
+
+		// TODO доделать подгрузку товаров в сессию
+
+		if (!is_null($this->userId)) {
+			$this->cartRepository->save(new Cart($id, $this->userId));
+		}
 		echo json_encode(['success' => 'ok']);
 	}
 
 	public function actionDelete()
 	{
 		$id = $this->request->post('cart_id');
+
+		// TODO доделать удаление товаров из сессии
+
 		$cart = $this->cartRepository->getOne($id);
 		$this->cartRepository->delete($cart);
 		echo json_encode(['success' => 'ok']);
@@ -52,9 +62,14 @@ class CartController extends Controllers
 
 	public function actionDrop()
 	{
-		echo json_encode(['success' => 'ok']);
-		$this->cartRepository->deleteAll();
-	}
+		if (!is_null($this->userId)) {
+			$this->cartRepository->deleteAll($this->userId);
+		}
 
+		// TODO доделать очистку корзины в сессии
+
+		echo json_encode(['success' => 'ok']);
+
+	}
 
 }

@@ -11,7 +11,7 @@ class Order extends DataEntity
 	public $status;
 	public $order_date;
 
-	public function __construct($userId = 1)
+	public function __construct($userId = null)
 	{
 		$this->userId = $userId;
 		$this->status = 'new';

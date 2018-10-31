@@ -49,7 +49,7 @@ class CartRepository extends Repository
 		]);
 	}
 
-	public function delete(DataEntity $entity)
+	public function deleteProduct(DataEntity $entity)
 	{
 		$inCart = $this->getOneByEntity($entity);
 		if ($inCart->count > 1) {
@@ -61,22 +61,11 @@ class CartRepository extends Repository
 		}
 	}
 
-	public function deleteAll()
+	public function deleteAll($userId)
 	{
 		$table = $this->getTableName();
-		$sql = "delete from {$table} WHERE {$table}.orderId IS NULL";
-		$this->db->execute($sql, []);
-	}
-
-	public function getAll()
-	{
-		$table = $this->getTableName();
-		$sql = "SELECT 
-				{$table}.id AS cart_id, {$table}.count, 
-				product.* 
-				FROM {$table} INNER JOIN product ON {$table}.productId = product.id
-				WHERE {$table}.orderId IS NULL";
-		return $this->db->queryAll($sql, []);
+		$sql = "delete from {$table} WHERE {$table}.orderId IS NULL AND userId=:userId";
+		$this->db->execute($sql, ['userId' => $userId]);
 	}
 
 	public function setOrder($order)
@@ -89,8 +78,12 @@ class CartRepository extends Repository
 	public function getAllByUser($userId)
 	{
 		$table = $this->getTableName();
-		$sql = "SELECT * FROM {$table} WHERE userId=:userId";
-		return $this->db->queryAllAsObj($sql, $this->getEntityClass(), ['userId' => $userId]);
+		$sql = "SELECT 
+				{$table}.id AS cart_id, {$table}.count, 
+				product.* 
+				FROM {$table} INNER JOIN product ON {$table}.productId = product.id
+				WHERE {$table}.orderId IS NULL AND userId=:userId";
+		return $this->db->queryAll($sql, ['userId' => $userId]);
 	}
 
 
