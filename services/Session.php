@@ -14,7 +14,10 @@ class Session
 
     public function get($key)
     {
-        return $_SESSION[$key];
+    	if (array_key_exists($key, $_SESSION)) {
+		    return $_SESSION[$key];
+	    }
+        return null;
     }
 
     public function set($key, $value)

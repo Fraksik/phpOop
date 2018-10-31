@@ -8,7 +8,7 @@
 <div class="cart">
     <p>Корзина:</p>
 	<table id="cart_table">
-	<?php foreach ($cart as $product): ?>
+	<?php foreach ($cart ?? null as $product): ?>
 		<tr>
 			<td><b><?=$product['name']?></b></td>
 			<td>

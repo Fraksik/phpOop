@@ -5,6 +5,7 @@
 <a href="/cart">Корзина</a><br>
 <a href="/orders">Заказы</a><br><br>
 
+<h2><?=$text ?? null?></h2>
 <div class="catalog">
 <?php foreach ($model as $product): ?>
 	<div class="product">

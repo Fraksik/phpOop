@@ -21,8 +21,8 @@ class Cart extends DataEntity
 
 	}
 
-	public static function getCartCost() {
-		$cart = (new CartRepository())->getAll();
+	public static function getCartCost($userId) {
+		$cart = (new CartRepository())->getAllByUser($userId);
 		$totalCost = 0;
 		foreach ($cart as $product) {
 			$totalCost += $product['count'] * $product['price'];

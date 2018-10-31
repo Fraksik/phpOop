@@ -86,5 +86,12 @@ class CartRepository extends Repository
 		$this->db->execute($sql, []);
 	}
 
+	public function getAllByUser($userId)
+	{
+		$table = $this->getTableName();
+		$sql = "SELECT * FROM {$table} WHERE userId=:userId";
+		return $this->db->queryAllAsObj($sql, $this->getEntityClass(), ['userId' => $userId]);
+	}
+
 
 }

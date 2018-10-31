@@ -2,7 +2,7 @@
 <a href="/product">Каталог</a><br>
 <a href="/cart">Корзина</a><br>
 <a href="/orders">Заказы</a><br><br>
-
+<h3>Ваши заказы:</h3>
 <table class="orders">
 	<?php foreach ($orders as $order): ?>
 		<tr>

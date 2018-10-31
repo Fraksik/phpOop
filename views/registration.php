@@ -1,3 +1,4 @@
+<a href="/../product">Перейти в каталог</a>
 <form action="newUser" method="post" class="reg_registration">
     <div class="reg_field">
         <label for="user">Имя:</label>
@@ -14,8 +15,13 @@
     <div class="reg_field">
         <label for="pass_2">Повторить пароль:</label>
         <input type="password" id="pass_2" name="pass_2"><br>
-        <p class="reg_warning"><?=$text ?? null ?></p>
+        <div class="reg_warning">
+            <?php foreach ($text ?? [] as $msg): ?>
+				<p><?=$msg?></p>
+            <?php endforeach; ?>
+        </div>
     </div>
-    <input type="submit">
+    <input type="submit" value="Зарегистрироваться">
 </form>
 <a href="/../login">Авторизация</a>
+

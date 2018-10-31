@@ -10,20 +10,29 @@ use app\services\renderers\IRenderer;
 class CartController extends Controllers
 {
 	private $request;
+	private $session;
 	private $cartRepository;
 
 	public function __construct(IRenderer $renderer, $useLayout = true)
 	{
 		parent::__construct($renderer, $useLayout);
 		$this->request = App::call()->request;
+		$this->session = App::call()->session;
 		$this->cartRepository = new CartRepository();
 
 	}
 
 	public function actionIndex()
 	{
-		$cart = $this->cartRepository->getAll();
-		$cost = Cart::getCartCost();
+		$cart = null;
+		$cost = 0;
+		// TODO доделать подгрузку товаров из сессии
+
+		$userId = $this->session->get('userId');
+		if (!is_null($userId)) {
+			$cart = $this->cartRepository->getAllByUser($userId);
+			$cost = Cart::getCartCost($userId);
+		}
 		echo $this->render("cart", ['cart' => $cart, 'cost' => $cost]);
 	}
 

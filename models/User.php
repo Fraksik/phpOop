@@ -2,37 +2,59 @@
 
 namespace app\models;
 
+use app\models\repositories\UserRepository;
+
 class User extends DataEntity
 {
 	public $id;
-	public $userName;
-	public $userPass;
-	public $userRole;
+	public $name;
+	public $login;
+	public $pass;
+	public $role;
+	private static $msg;
 
-	public function __construct($name, $pass, $role=2)
+	public function __construct($name, $login, $pass, $role=2)
 	{
-		$this->userName = $name;
-		$this->userPass = $pass;
-		$this->userRole = $role;
+		$this->name = $name;
+		$this->login = $login;
+		$this->pass = $pass;
+		$this->role = $role;
 	}
 
 	public static function testData($data)
 	{
-		$empty = User::testEmptyData($data);
-		if ($empty) {
-			return $empty;
-		}
-
+		User::$msg = [];
+		User::testEmptyData($data);
+		User::testUniqueLogin($data['login']);
+		User::testVerifyPass($data['pass'], $data['pass_2']);
+		return User::$msg;
 	}
 
-	private static function testEmptyData($arr)
+	private static function testEmptyData($data)
 	{
-		foreach ($arr as $key => $value) {
-			if ($value == '') {
-				return "Все поля должны быть заполнены!";
+		foreach ($data as $field) {
+			if ($field == "") {
+				return User::$msg[] = "Все поля должны быть заполнены!";
 			}
 		}
-		return false;
+	}
+
+	private static function testUniqueLogin($login)
+	{
+		$testLogin = (new UserRepository())->matchLogin($login);
+		if ($login === "") {
+			return;
+		}
+		else if (!empty($testLogin)) {
+			User::$msg[] = "Этот логин \"$login\" уже занят, пожалуйста придумайте другой логин!";
+		}
+	}
+
+	private static function testVerifyPass($pass, $pass2)
+	{
+		if ($pass !== $pass2) {
+			User::$msg[] = "Поля для ввода пароля должны быть идентичны!";
+		}
 	}
 
 

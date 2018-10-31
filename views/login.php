@@ -1,4 +1,4 @@
-<a href="login/registration">Регистрация</a>
+<a href="/../product">Перейти в каталог</a>
 <div class="login_container">
 	  <form action="login/authorization" method="post" class="login_check_in">
 	      <div class="login_field">
@@ -10,5 +10,9 @@
 	          <input type="password" name="pass" id="pass">
 	      </div>
 	      <input type="submit" value="Войти">
+		  <div class="reg_warning">
+	            <p><?=$msg ?? null?></p>
+		  </div>
 	  </form>
 </div>
+<a href="login/registration">Регистрация</a>
