@@ -10,7 +10,7 @@
 					id="order_status_<?=$order->id?>"><?=$order->status?></span></td>
 			<td>Оформлен: <span class="order_date"><?=$order->order_date?></span></td>
 			<td>
-				<form action="cart/showOrder" method="post">
+				<form action="orders/showOrder" method="post">
 					<input type="hidden" name="id" value="<?=$order->id?>">
 					<input type="submit" value="Посмотреть заказ" class="show_order">
 				</form>

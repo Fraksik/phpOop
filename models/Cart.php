@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\models\repositories\CartRepository;
+
 class Cart extends DataEntity
 {
 	public $id;
@@ -16,6 +18,16 @@ class Cart extends DataEntity
 		$this->productId = $productId;
 		$this->count = $count;
 		$this->orderId = null;
+
+	}
+
+	public static function getCartCost() {
+		$cart = (new CartRepository())->getAll();
+		$totalCost = 0;
+		foreach ($cart as $product) {
+			$totalCost += $product['count'] * $product['price'];
+		}
+		return $totalCost;
 	}
 
 }

@@ -17,15 +17,6 @@ class CartRepository extends Repository
 		return Cart::class;
 	}
 
-	public function getCartCost() {
-		$cart = $this->getAll();
-		$totalCost = 0;
-		foreach ($cart as $product) {
-			$totalCost += $product['count'] * $product['price'];
-		}
-		return $totalCost;
-	}
-
 	public function save(DataEntity $entity) {
 		$inCart = $this->getOneByEntity($entity);
 		if (is_null($inCart)) {
@@ -63,7 +54,7 @@ class CartRepository extends Repository
 		$inCart = $this->getOneByEntity($entity);
 		if ($inCart->count > 1) {
 			$inCart->count -= 1;
-			(new CartRepository())->update($inCart);
+			$this->update($inCart);
 		} else {
 			$sql = "delete from {$this->getTableName()} where id = :id";
 			$this->db->execute($sql, [':id' => $entity->id]);
@@ -95,24 +86,5 @@ class CartRepository extends Repository
 		$this->db->execute($sql, []);
 	}
 
-	public function getOrder($orderId)
-	{
-		$table = $this->getTableName();
-		$sql = "SELECT 
-				{$table}.id AS cart_id, {$table}.count, {$table}.orderId,
-				product.* 
-				FROM {$table} INNER JOIN product ON {$table}.productId = product.id
-				WHERE {$table}.orderId =:orderId";
-		return $this->db->queryAll($sql, [':orderId' => $orderId]);
-	}
-
-	public function getOrderCost($orderId) {
-		$cart = $this->getOrder($orderId);
-		$totalCost = 0;
-		foreach ($cart as $product) {
-			$totalCost += $product['count'] * $product['price'];
-		}
-		return $totalCost;
-	}
 
 }

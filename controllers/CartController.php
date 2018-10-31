@@ -4,31 +4,26 @@ namespace app\controllers;
 
 use app\base\App;
 use app\models\Cart;
-use app\models\Order;
 use app\models\repositories\CartRepository;
-use app\models\repositories\OrderRepository;
 use app\services\renderers\IRenderer;
 
 class CartController extends Controllers
 {
 	private $request;
 	private $cartRepository;
-	private $orderRepository;
-	private $order;
 
 	public function __construct(IRenderer $renderer, $useLayout = true)
 	{
 		parent::__construct($renderer, $useLayout);
 		$this->request = App::call()->request;
 		$this->cartRepository = new CartRepository();
-		$this->orderRepository = new OrderRepository();
-		$this->order = new Order();
+
 	}
 
 	public function actionIndex()
 	{
 		$cart = $this->cartRepository->getAll();
-		$cost = $this->cartRepository->getCartCost(1);
+		$cost = Cart::getCartCost();
 		echo $this->render("cart", ['cart' => $cart, 'cost' => $cost]);
 	}
 
@@ -52,18 +47,5 @@ class CartController extends Controllers
 		$this->cartRepository->deleteAll();
 	}
 
-	public function actionOrder()
-	{
-		echo json_encode(['success' => 'ok']);
-		($this->orderRepository)->create($this->order);
-	}
 
-	public function actionShowOrder()
-	{
-		$id = $this->request->post('id');
-		$cart = $this->cartRepository->getOrder($id);
-		$cost = $this->cartRepository->getOrderCost($id);
-		echo $this->render("cart_order", ['cart' => $cart, 'cost' => $cost]);
-
-	}
 }

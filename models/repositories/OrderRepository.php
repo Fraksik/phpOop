@@ -7,6 +7,15 @@ use app\models\Order;
 
 class OrderRepository extends Repository
 {
+	private $cartRepository;
+
+
+	public function __construct()
+	{
+		$this->cartRepository = new CartRepository();
+	}
+
+
 	public function getTableName()
 	{
 		return 'orders';
@@ -20,7 +29,7 @@ class OrderRepository extends Repository
 	public function create(DataEntity $entity)
 	{
 		parent::create($entity);
-		(new CartRepository())->setOrder($entity->id);
+		$this->cartRepository->setOrder($entity->id);
 	}
 
 	public function getUserOrders($userId)
@@ -35,6 +44,17 @@ class OrderRepository extends Repository
 		$table = $this->getTableName();
 		$sql = "UPDATE {$table} SET status = 'canceled' WHERE id = :id";
 		$this->db->execute($sql, ['id' => $id]);
+	}
+
+	public function getOrder($orderId)
+	{
+		$table = $this->cartRepository->getTableName();
+		$sql = "SELECT 
+				{$table}.id AS cart_id, {$table}.count, {$table}.orderId,
+				product.* 
+				FROM {$table} INNER JOIN product ON {$table}.productId = product.id
+				WHERE {$table}.orderId =:orderId";
+		return $this->db->queryAll($sql, [':orderId' => $orderId]);
 	}
 
 }
