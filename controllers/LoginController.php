@@ -9,15 +9,11 @@ use app\services\renderers\IRenderer;
 
 class LoginController extends Controllers
 {
-	private $request;
-	private $session;
 	private $userRepository;
 
 	public function __construct(IRenderer $renderer, $useLayout = true)
 	{
 		parent::__construct($renderer, $useLayout);
-		$this->request = App::call()->request;
-		$this->session = App::call()->session;
 		$this->userRepository = new UserRepository();
 	}
 

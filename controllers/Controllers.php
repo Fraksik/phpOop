@@ -3,11 +3,14 @@
 namespace app\controllers;
 
 
+use app\base\App;
 use app\services\renderers\IRenderer;
 
 abstract class Controllers
 {
 	protected $action;
+	protected $request;
+	protected $session;
 	protected $defaultAction = 'index';
 	protected $layout = "main";
 	protected $useLayout;
@@ -17,6 +20,8 @@ abstract class Controllers
 	{
 		$this->renderer = $renderer;
 		$this->useLayout = $useLayout;
+		$this->request = App::call()->request;
+		$this->session = App::call()->session;
 	}
 
 

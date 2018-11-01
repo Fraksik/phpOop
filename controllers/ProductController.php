@@ -9,16 +9,12 @@ use app\services\renderers\IRenderer;
 
 class ProductController extends Controllers
 {
-	private $request;
-	private $session;
 	private $cartSession;
 	private $productRepository;
 
 	public function __construct(IRenderer $renderer, $useLayout = true)
 	{
 		parent::__construct($renderer, $useLayout);
-		$this->request = App::call()->request;
-		$this->session = App::call()->session;
 		$this->productRepository = new ProductRepository();
 		$this->cartSession = new CartSession();
 	}

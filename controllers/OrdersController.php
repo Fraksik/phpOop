@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-
 use app\base\App;
 use app\models\Order;
 use app\models\repositories\OrderRepository;
@@ -11,8 +10,6 @@ use app\services\renderers\IRenderer;
 class OrdersController extends Controllers
 {
 	private $ordersRepository;
-	private $request;
-	private $session;
 	private $order;
 	private $userId;
 
@@ -20,8 +17,6 @@ class OrdersController extends Controllers
 	{
 		parent::__construct($renderer, $useLayout);
 		$this->ordersRepository = new OrderRepository();
-		$this->request = App::call()->request;
-		$this->session = App::call()->session;
 		$this->userId = $this->session->get('userId');
 		$this->order = new Order($this->userId);
 	}
@@ -48,7 +43,6 @@ class OrdersController extends Controllers
 		if (!is_null($this->userId)) {
 			($this->ordersRepository)->create($this->order);
 		}
-
 	}
 
 	public function actionShowOrder()

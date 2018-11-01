@@ -9,8 +9,6 @@ use app\services\renderers\IRenderer;
 
 class CartController extends Controllers
 {
-	private $request;
-	private $session;
 	private $cartRepository;
 	private $userId;
 
@@ -18,8 +16,6 @@ class CartController extends Controllers
 	public function __construct(IRenderer $renderer, $useLayout = true)
 	{
 		parent::__construct($renderer, $useLayout);
-		$this->request = App::call()->request;
-		$this->session = App::call()->session;
 		$this->cartRepository = new CartRepository();
 		$this->userId = $this->session->get('userId');
 	}
