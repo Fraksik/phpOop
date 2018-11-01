@@ -14,6 +14,7 @@ abstract class Controllers
 	protected $defaultAction = 'index';
 	protected $layout = "main";
 	protected $useLayout;
+	protected $repository;
 	private $renderer = null;
 
 	public function __construct(IRenderer $renderer, $useLayout = true)
@@ -22,8 +23,8 @@ abstract class Controllers
 		$this->useLayout = $useLayout;
 		$this->request = App::call()->request;
 		$this->session = App::call()->session;
+		$this->repository = $this->getRepository();
 	}
-
 
 	public function run($action = null)
 	{
@@ -34,8 +35,9 @@ abstract class Controllers
 		}else{
 			echo "404";
 		}
-
 	}
+
+	abstract public function getRepository();
 
 	protected function render($template, $params = [])
 	{

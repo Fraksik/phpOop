@@ -2,9 +2,9 @@
 
 namespace app\models;
 
-use app\models\repositories\OrderRepository;
+use app\models\repositories\OrdersRepository;
 
-class Order extends DataEntity
+class Orders extends DataEntity
 {
 	public $id;
 	public $userId;
@@ -19,7 +19,7 @@ class Order extends DataEntity
 	}
 
 	public static function getOrderCost($orderId) {
-		$cart = (new OrderRepository())->getOrder($orderId);
+		$cart = (new OrdersRepository())->getOrder($orderId);
 		$totalCost = 0;
 		foreach ($cart as $product) {
 			$totalCost += $product['count'] * $product['price'];

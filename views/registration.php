@@ -23,5 +23,5 @@
     </div>
     <input type="submit" value="Зарегистрироваться">
 </form>
-<a href="/../login">Авторизация</a>
+<a href="/../user">Авторизация</a>
 

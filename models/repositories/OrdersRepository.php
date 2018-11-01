@@ -3,9 +3,9 @@
 namespace app\models\repositories;
 
 use app\models\DataEntity;
-use app\models\Order;
+use app\models\Orders;
 
-class OrderRepository extends Repository
+class OrdersRepository extends Repository
 {
 	private $cartRepository;
 
@@ -24,7 +24,7 @@ class OrderRepository extends Repository
 
 	public function getEntityClass()
 	{
-		return Order::class;
+		return Orders::class;
 	}
 
 	public function create(DataEntity $entity)

@@ -7,14 +7,12 @@ use app\models\repositories\UserRepository;
 use app\models\User;
 use app\services\renderers\IRenderer;
 
-class LoginController extends Controllers
+class UserController extends Controllers
 {
-	private $userRepository;
 
-	public function __construct(IRenderer $renderer, $useLayout = true)
+	public function getRepository()
 	{
-		parent::__construct($renderer, $useLayout);
-		$this->userRepository = new UserRepository();
+		return new UserRepository();
 	}
 
 	public function actionIndex()
@@ -38,7 +36,7 @@ class LoginController extends Controllers
 		}
 
 		$user = new User($data['user'], $data['login'], $data['pass']);
-		$this->userRepository->create($user);
+		$this->repository->create($user);
 		$this->session->set("user", "$user->name");
 		$this->session->set("userId", "$user->id");
 		header("Location: /../product");
@@ -48,7 +46,7 @@ class LoginController extends Controllers
 	{
 		$login = $this->request->post('login');
 		$pass = $this->request->post('pass');
-		$user = $this->userRepository->findUser($login, $pass);
+		$user = $this->repository->findUser($login, $pass);
 		if ($user) {
 			$this->session->set("user", "{$user['name']}");
 			$this->session->set("userId", "{$user['id']}");

@@ -3,29 +3,32 @@
 namespace app\controllers;
 
 use app\base\App;
-use app\models\Order;
-use app\models\repositories\OrderRepository;
+use app\models\Orders;
+use app\models\repositories\OrdersRepository;
 use app\services\renderers\IRenderer;
 
 class OrdersController extends Controllers
 {
-	private $ordersRepository;
 	private $order;
 	private $userId;
 
 	public function __construct(IRenderer $renderer, $useLayout = true)
 	{
 		parent::__construct($renderer, $useLayout);
-		$this->ordersRepository = new OrderRepository();
 		$this->userId = $this->session->get('userId');
-		$this->order = new Order($this->userId);
+		$this->order = new Orders($this->userId);
+	}
+
+	public function getRepository()
+	{
+		return new OrdersRepository();
 	}
 
 	public function actionIndex()
 	{
 		$orders = null;
 		if (!is_null($this->userId)) {
-			$orders = $this->ordersRepository->getUserOrders($this->userId);
+			$orders = $this->repository->getUserOrders($this->userId);
 		}
 		echo $this->render("orders", ['orders' => $orders]);
 	}
@@ -34,23 +37,22 @@ class OrdersController extends Controllers
 	{
 		echo json_encode(['success' => 'ok']);
 		$id = $this->request->post('id');
-		$this->ordersRepository->cancelOrder($id);
+		$this->repository->cancelOrder($id);
 	}
 
 	public function actionMakeOrder()
 	{
 		echo json_encode(['success' => 'ok']);
 		if (!is_null($this->userId)) {
-			($this->ordersRepository)->create($this->order);
+			$this->repository->create($this->order);
 		}
 	}
 
 	public function actionShowOrder()
 	{
 		$id = $this->request->post('id');
-		$cart = $this->ordersRepository->getOrder($id);
-		$cost = Order::getOrderCost($id);
+		$cart = $this->repository->getOrder($id);
+		$cost = Orders::getOrderCost($id);
 		echo $this->render("cart_order", ['cart' => $cart, 'cost' => $cost]);
-
 	}
 }
