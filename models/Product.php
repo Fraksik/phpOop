@@ -10,7 +10,7 @@ class Product extends DataEntity
 	public $price;
 	public $producerID;
 
-	public function __construct($name, $description, $price, $producerID)
+	public function __construct($name, $description, $price, $producerID = 1)
 	{
 		$this->name = $name;
 		$this->description = $description;

@@ -3,7 +3,8 @@
 <a href="/user">Авторизация</a><br>
 <a href="/product">Каталог</a><br>
 <a href="/cart">Корзина</a><br>
-<a href="/orders">Заказы</a><br><br>
+<a href="/orders">Заказы</a><br>
+<a href="/../product/adminka">Админка</a><br><br>
 
 <h2><?=$text ?? null?></h2>
 <div class="catalog">
