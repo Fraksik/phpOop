@@ -86,5 +86,15 @@ class CartRepository extends Repository
 		return $this->db->queryAll($sql, ['userId' => $userId]);
 	}
 
+	public function getAllFromSession()
+	{
+		$sql = "SELECT 
+				{$table}.id AS cart_id, {$table}.count, 
+				product.* 
+				FROM {$table} INNER JOIN product ON {$table}.productId = product.id
+				WHERE {$table}.orderId IS NULL AND userId=:userId";
+		$arr = $this->db->queryAll($sql, ['userId' => $userId]);
+	}
+
 
 }

@@ -4,7 +4,7 @@
 <a href="/orders">Заказы</a><br><br>
 <h3>Ваши заказы:</h3>
 <table class="orders">
-	<?php foreach ($orders ?? null as $order): ?>
+	<?php foreach ($orders ?? [] as $order): ?>
 		<tr>
 			<td>Заказ № <?=$order->id?></td>
 			<td class="orders_status_field">Статус: <span class="order_status_<?=$order->status?>"

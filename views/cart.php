@@ -8,7 +8,7 @@
 <div class="cart">
     <p>Корзина:</p>
 	<table id="cart_table">
-	<?php foreach ($cart ?? null as $product): ?>
+	<?php foreach ($cart ?? [] as $product): ?>
 		<tr>
 			<td><b><?=$product['name']?></b></td>
 			<td>
@@ -20,7 +20,7 @@
 					data-price="<?=$product['price']?>" class="cart_button_add">добавить</button>
 			</td>
 			<td>
-				<button data-cart_id="<?=$product['cart_id']?>" data-id="<?=$product['id']?>"
+				<button data-cart_id="<?=$product['cart_id'] ?? null?>" data-id="<?=$product['id']?>"
 					data-price="<?=$product['price']?>" class="cart_button_delete">удалить</button>
 			</td>
 		</tr>

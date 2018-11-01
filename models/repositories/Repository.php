@@ -121,7 +121,7 @@ abstract class Repository implements IRepository
 		return $arr;
 	}
 
-	private function getOneArr($id) {
+	public function getOneArr($id) {
 		$table = $this->getTableName();
 		$sql = "SELECT * FROM {$table} WHERE id = :id";
 
