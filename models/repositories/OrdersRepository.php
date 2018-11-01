@@ -58,4 +58,13 @@ class OrdersRepository extends Repository
 		return $this->db->queryAll($sql, [':orderId' => $orderId]);
 	}
 
+	public function getOrderCost($orderId) {
+		$cart = $this->getOrder($orderId);
+		$totalCost = 0;
+		foreach ($cart as $product) {
+			$totalCost += $product['count'] * $product['price'];
+		}
+		return $totalCost;
+	}
+
 }

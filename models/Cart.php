@@ -2,10 +2,6 @@
 
 namespace app\models;
 
-use app\models\repositories\CartRepository;
-use app\models\repositories\session\CartSession;
-use app\base\App;
-
 class Cart extends DataEntity
 {
 	public $id;
@@ -22,20 +18,4 @@ class Cart extends DataEntity
 		$this->orderId = null;
 
 	}
-
-	public static function getCartCost($userId = null) {
-		if (is_null($userId)) {
-			$cart = (new CartSession())::getAll();
-		} else {
-			$cart = (new CartRepository())->getAllByUser($userId);
-		}
-		$totalCost = 0;
-		foreach ($cart as $product) {
-			$totalCost += $product['count'] * $product['price'];
-		}
-		return $totalCost;
-	}
-
-
-
 }

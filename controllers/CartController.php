@@ -29,10 +29,10 @@ class CartController extends Controllers
 	{
 		if (!is_null($this->userId)) {
 			$cart = $this->repository->getAllByUser($this->userId);
-			$cost = Cart::getCartCost($this->userId);
+			$cost = $this->repository->getCartCost($this->userId);
 		} else {
-			$cart = CartSession::getAll();
-			$cost = Cart::getCartCost();
+			$cart = $this->cartSession->getAll();
+			$cost = $this->repository->getCartCost();
 		}
 		echo $this->render("cart", ['cart' => $cart, 'cost' => $cost]);
 	}
@@ -55,7 +55,7 @@ class CartController extends Controllers
 
 		if (!is_null($this->userId)) {
 			$cart = $this->repository->getOne($id);
-			$this->repository->delete($cart);
+			$this->repository->deleteProduct($cart);
 		} else {
 			$this->cartSession->delete($productId);
 		}
@@ -71,8 +71,6 @@ class CartController extends Controllers
 		} else {
 			$this->cartSession->deleteAll();
 		}
-
-		// TODO доделать очистку корзины в сессии
 
 		echo json_encode(['success' => 'ok']);
 

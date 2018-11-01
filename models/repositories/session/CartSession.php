@@ -2,36 +2,42 @@
 
 namespace app\models\repositories\session;
 
-
 use app\base\App;
 use app\models\repositories\ProductRepository;
 
 class CartSession
 {
+	private $session;
+
+	public function __construct()
+	{
+		$this->session = App::call()->session;
+	}
+
 
 	public function add($productId)
 	{
-		if (is_null(App::call()->session->get('cart'))) {
-			App::call()->session->set('cart', []);
+		if (is_null($this->session->get('cart'))) {
+			$this->session->set('cart', []);
 		}
 		$data = (new CartSession())->productInCart($productId);
-		App::call()->session->set('cart', $data);
+		$this->session->set('cart', $data);
 	}
 
 	public function delete($productId)
 	{
-		$data = App::call()->session->get('cart');
+		$this->session->get('cart');
 		if ($data[$productId] > 1) {
 			$data[$productId] -= 1;
 		} else {
 			unset($data[$productId]);
 		}
-		App::call()->session->set('cart', $data);
+		$this->session->set('cart', $data);
 	}
 
-	public static function getAll()
+	public function getAll()
 	{
-		$session = App::call()->session->get('cart');
+		$session = $this->session->get('cart');
 		$res = [];
 		foreach ($session as $key => $value) {
 			$arr = (new ProductRepository())->getOneArr($key);
@@ -43,12 +49,12 @@ class CartSession
 
 	public function deleteAll()
 	{
-		App::call()->session->set('cart', []);
+		$this->session->set('cart', []);
 	}
 
 	private function productInCart($productId)
 	{
-		$arr = App::call()->session->get('cart');
+		$arr = $this->session->get('cart');
 
 		if(array_key_exists($productId, $arr)) {
 			$arr[$productId] += 1;

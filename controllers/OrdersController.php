@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\base\App;
 use app\models\Orders;
 use app\models\repositories\OrdersRepository;
 use app\services\renderers\IRenderer;
@@ -52,7 +51,7 @@ class OrdersController extends Controllers
 	{
 		$id = $this->request->post('id');
 		$cart = $this->repository->getOrder($id);
-		$cost = Orders::getOrderCost($id);
+		$cost = $this->repository->getOrderCost($id);
 		echo $this->render("cart_order", ['cart' => $cart, 'cost' => $cost]);
 	}
 }

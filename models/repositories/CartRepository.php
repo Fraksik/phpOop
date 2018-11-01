@@ -4,6 +4,7 @@ namespace app\models\repositories;
 
 use app\models\Cart;
 use app\models\DataEntity;
+use app\models\repositories\session\CartSession;
 
 class CartRepository extends Repository
 {
@@ -86,15 +87,16 @@ class CartRepository extends Repository
 		return $this->db->queryAll($sql, ['userId' => $userId]);
 	}
 
-	public function getAllFromSession()
-	{
-		$sql = "SELECT 
-				{$table}.id AS cart_id, {$table}.count, 
-				product.* 
-				FROM {$table} INNER JOIN product ON {$table}.productId = product.id
-				WHERE {$table}.orderId IS NULL AND userId=:userId";
-		$arr = $this->db->queryAll($sql, ['userId' => $userId]);
+	public function getCartCost($userId = null) {
+		if (is_null($userId)) {
+			$cart = (new CartSession())->getAll();
+		} else {
+			$cart = $this->getAllByUser($userId);
+		}
+		$totalCost = 0;
+		foreach ($cart as $product) {
+			$totalCost += $product['count'] * $product['price'];
+		}
+		return $totalCost;
 	}
-
-
 }

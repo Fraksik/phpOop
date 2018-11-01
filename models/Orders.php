@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use app\models\repositories\OrdersRepository;
-
 class Orders extends DataEntity
 {
 	public $id;
@@ -16,14 +14,5 @@ class Orders extends DataEntity
 		$this->userId = $userId;
 		$this->status = 'new';
 		$this->order_date = date(' H:m d.m.y');
-	}
-
-	public static function getOrderCost($orderId) {
-		$cart = (new OrdersRepository())->getOrder($orderId);
-		$totalCost = 0;
-		foreach ($cart as $product) {
-			$totalCost += $product['count'] * $product['price'];
-		}
-		return $totalCost;
 	}
 }
