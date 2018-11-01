@@ -2,13 +2,24 @@
 
 namespace app\controllers;
 
-use app\base\App;
+use app\models\repositories\session\CartSession;
+use app\models\repositories\session\UserSession;
 use app\models\repositories\UserRepository;
 use app\models\User;
 use app\services\renderers\IRenderer;
 
 class UserController extends Controllers
 {
+	private $cartSession;
+	private $userSession;
+
+	public function __construct(IRenderer $renderer, $useLayout = true)
+	{
+		parent::__construct($renderer, $useLayout);
+		$this->cartSession = new CartSession();
+		$this->userSession = new UserSession();
+	}
+
 
 	public function getRepository()
 	{
@@ -37,8 +48,9 @@ class UserController extends Controllers
 
 		$user = new User($data['user'], $data['login'], $data['pass']);
 		$this->repository->create($user);
-		$this->session->set("user", "$user->name");
-		$this->session->set("userId", "$user->id");
+		$this->userSession->create($user->name, $user->id);
+		$this->cartSession->moveCart();
+
 		header("Location: /../product");
 	}
 

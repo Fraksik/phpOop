@@ -3,7 +3,6 @@
 namespace app\base;
 
 use app\controllers\EmptyController;
-use app\controllers\ProductController;
 use app\traits\TSingleton;
 
 class App

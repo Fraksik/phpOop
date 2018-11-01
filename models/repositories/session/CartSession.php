@@ -3,15 +3,21 @@
 namespace app\models\repositories\session;
 
 use app\base\App;
+use app\models\Cart;
+use app\models\repositories\CartRepository;
 use app\models\repositories\ProductRepository;
 
 class CartSession
 {
 	private $session;
+	private $cartRepository;
+	private $productRepository;
 
 	public function __construct()
 	{
 		$this->session = App::call()->session;
+		$this->cartRepository = new CartRepository();
+		$this->productRepository = new ProductRepository();
 	}
 
 
@@ -20,13 +26,13 @@ class CartSession
 		if (is_null($this->session->get('cart'))) {
 			$this->session->set('cart', []);
 		}
-		$data = (new CartSession())->productInCart($productId);
+		$data = $this->productInCart($productId);
 		$this->session->set('cart', $data);
 	}
 
 	public function delete($productId)
 	{
-		$this->session->get('cart');
+		$data = $this->session->get('cart');
 		if ($data[$productId] > 1) {
 			$data[$productId] -= 1;
 		} else {
@@ -40,7 +46,7 @@ class CartSession
 		$session = $this->session->get('cart');
 		$res = [];
 		foreach ($session as $key => $value) {
-			$arr = (new ProductRepository())->getOneArr($key);
+			$arr = $this->productRepository->getOneArr($key);
 			$arr['count'] = $value;
 			$res[] = $arr;
 		}
@@ -62,6 +68,20 @@ class CartSession
 			$arr[$productId] = 1;
 		}
 		return $arr;
+	}
+
+	public function moveCart()
+	{
+		$cart = $this->session->get('cart');
+
+		if (!is_null($cart)) {
+			$userId = $this->session->get('userId');
+
+			foreach ($cart as $productId => $count) {
+				$this->cartRepository->save(new Cart($productId, $userId, $count));
+			}
+		}
+
 	}
 
 }
