@@ -22,6 +22,22 @@ return [
 		],
 		'session' => [
 			'class' => \app\services\Session::class
+		],
+		'cartDb' => [
+			'class' => \app\models\repositories\CartRepository::class
+		],
+		'ordersDb' => [
+			'class' => \app\models\repositories\OrdersRepository::class
+		],
+		'productDb' => [
+			'class' => \app\models\repositories\ProductRepository::class
+		],
+		'userDb' => [
+			'class' => \app\models\repositories\UserRepository::class
+		],
+		'regTst' => [
+			'class' => \app\services\RegTst::class
 		]
 	]
+
 ];

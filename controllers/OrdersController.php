@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\Orders;
-use app\models\repositories\OrdersRepository;
 use app\services\renderers\IRenderer;
 
 class OrdersController extends Controllers
@@ -18,16 +17,11 @@ class OrdersController extends Controllers
 		$this->order = new Orders($this->userId);
 	}
 
-	public function getRepository()
-	{
-		return new OrdersRepository();
-	}
-
 	public function actionIndex()
 	{
 		$orders = null;
 		if (!is_null($this->userId)) {
-			$orders = $this->repository->getUserOrders($this->userId);
+			$orders = $this->ordersDb->getUserOrders($this->userId);
 		}
 		echo $this->render("orders", ['orders' => $orders]);
 	}
@@ -36,22 +30,22 @@ class OrdersController extends Controllers
 	{
 		echo json_encode(['success' => 'ok']);
 		$id = $this->request->post('id');
-		$this->repository->cancelOrder($id);
+		$this->ordersDb->cancelOrder($id);
 	}
 
 	public function actionMakeOrder()
 	{
 		echo json_encode(['success' => 'ok']);
 		if (!is_null($this->userId)) {
-			$this->repository->create($this->order);
+			$this->ordersDb->create($this->order);
 		}
 	}
 
 	public function actionShowOrder()
 	{
 		$id = $this->request->post('id');
-		$cart = $this->repository->getOrder($id);
-		$cost = $this->repository->getOrderCost($id);
+		$cart = $this->ordersDb->getOrder($id);
+		$cost = $this->ordersDb->getOrderCost($id);
 		echo $this->render("cart_order", ['cart' => $cart, 'cost' => $cost]);
 	}
 }

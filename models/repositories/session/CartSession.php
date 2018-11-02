@@ -4,20 +4,14 @@ namespace app\models\repositories\session;
 
 use app\base\App;
 use app\models\Cart;
-use app\models\repositories\CartRepository;
-use app\models\repositories\ProductRepository;
 
 class CartSession
 {
 	private $session;
-	private $cartRepository;
-	private $productRepository;
 
 	public function __construct()
 	{
 		$this->session = App::call()->session;
-		$this->cartRepository = new CartRepository();
-		$this->productRepository = new ProductRepository();
 	}
 
 
@@ -44,9 +38,12 @@ class CartSession
 	public function getAll()
 	{
 		$session = $this->session->get('cart');
+		if (is_null($session)) {
+			$this->session->set('cart', []);
+		}
 		$res = [];
 		foreach ($session as $key => $value) {
-			$arr = $this->productRepository->getOneArr($key);
+			$arr = App::call()->productDb->getOneArr($key);
 			$arr['count'] = $value;
 			$res[] = $arr;
 		}
@@ -78,7 +75,7 @@ class CartSession
 			$userId = $this->session->get('userId');
 
 			foreach ($cart as $productId => $count) {
-				$this->cartRepository->save(new Cart($productId, $userId, $count));
+				App::call()->cartDb->save(new Cart($productId, $userId, $count));
 			}
 		}
 

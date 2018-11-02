@@ -2,28 +2,18 @@
 
 namespace app\controllers;
 
-use app\models\repositories\session\CartSession;
-use app\models\repositories\session\UserSession;
-use app\models\repositories\UserRepository;
+use app\base\App;
 use app\models\User;
 use app\services\renderers\IRenderer;
 
 class UserController extends Controllers
 {
-	private $cartSession;
-	private $userSession;
+	private $regTst;
 
 	public function __construct(IRenderer $renderer, $useLayout = true)
 	{
 		parent::__construct($renderer, $useLayout);
-		$this->cartSession = new CartSession();
-		$this->userSession = new UserSession();
-	}
-
-
-	public function getRepository()
-	{
-		return new UserRepository();
+		$this->regTst = App::call()->regTst;
 	}
 
 	public function actionIndex()
@@ -39,7 +29,7 @@ class UserController extends Controllers
 	public function actionNewUser()
 	{
 		$data = $this->request->getParams('post');
-		$msg = User::testData($data);
+		$msg = $this->regTst->test($data);
 
 		if (!empty($msg)) {
 			echo $this->render("registration", ['text' => $msg]);
@@ -47,9 +37,10 @@ class UserController extends Controllers
 		}
 
 		$user = new User($data['user'], $data['login'], $data['pass']);
-		$this->repository->create($user);
-		$this->userSession->create($user->name, $user->id);
-		$this->cartSession->moveCart();
+		$this->userDb->create($user);
+
+		$this->userSes->create($user->name, $user->id);
+		$this->cartSes->moveCart();
 
 		header("Location: /../product");
 	}
@@ -58,7 +49,7 @@ class UserController extends Controllers
 	{
 		$login = $this->request->post('login');
 		$pass = $this->request->post('pass');
-		$user = $this->repository->findUser($login, $pass);
+		$user = $this->userDb->findUser($login, $pass);
 		if ($user) {
 			$this->session->set("user", "{$user['name']}");
 			$this->session->set("userId", "{$user['id']}");

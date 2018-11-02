@@ -3,15 +3,9 @@
 namespace app\controllers;
 
 use app\models\Product;
-use app\models\repositories\ProductRepository;
 
 class ProductController extends Controllers
 {
-
-	public function getRepository()
-	{
-		return new ProductRepository();
-	}
 
 	public function actionIndex()
     {
@@ -20,14 +14,14 @@ class ProductController extends Controllers
 		    $user = "незнакомец";
 	    }
 	    $msg = "Добро пожаловать, $user!";
-	    $model = $this->repository->getAll();
+	    $model = $this->productDb->getAll();
 	    echo $this->render("catalog", ['model' => $model, 'text' => $msg]);
     }
 
     public function actionCard()
     {
         $id = $this->request->get('id');
-        $model = $this->repository->getOne($id);
+        $model = $this->productDb->getOne($id);
         echo $this->render("card", ['model' => $model]);
     }
 
@@ -42,7 +36,7 @@ class ProductController extends Controllers
     	$price = $this->request->post('price');
     	$desc = $this->request->post('desc');
 
-    	$this->repository->save(new Product($name, $desc, $price));
+    	$this->productDb->save(new Product($name, $desc, $price));
 
 	    header("Location: /../product");
     }

@@ -3,36 +3,26 @@
 namespace app\controllers;
 
 use app\models\Cart;
-use app\models\repositories\CartRepository;
-use app\models\repositories\session\CartSession;
 use app\services\renderers\IRenderer;
 
 class CartController extends Controllers
 {
 	private $userId;
-	private $cartSession;
-
 
 	public function __construct(IRenderer $renderer, $useLayout = true)
 	{
 		parent::__construct($renderer, $useLayout);
 		$this->userId = $this->session->get('userId');
-		$this->cartSession = new CartSession();
-	}
-
-	public function getRepository()
-	{
-		return new CartRepository();
 	}
 
 	public function actionIndex()
 	{
 		if (!is_null($this->userId)) {
-			$cart = $this->repository->getAllByUser($this->userId);
-			$cost = $this->repository->getCartCost($this->userId);
+			$cart = $this->cartDb->getAllByUser($this->userId);
+			$cost = $this->cartDb->getCartCost($this->userId);
 		} else {
-			$cart = $this->cartSession->getAll();
-			$cost = $this->repository->getCartCost();
+			$cart = $this->cartSes->getAll();
+			$cost = $this->cartDb->getCartCost();
 		}
 		echo $this->render("cart", ['cart' => $cart, 'cost' => $cost]);
 	}
@@ -41,9 +31,9 @@ class CartController extends Controllers
 		$productId = $this->request->post('id');
 
 		if (!is_null($this->userId)) {
-			$this->repository->save(new Cart($productId, $this->userId));
+			$this->cartDb->save(new Cart($productId, $this->userId));
 		} else {
-			$this->cartSession->add($productId);
+			$this->cartSes->add($productId);
 		}
 		echo json_encode(['success' => 'ok']);
 	}
@@ -54,12 +44,11 @@ class CartController extends Controllers
 		$productId = $this->request->post('id');
 
 		if (!is_null($this->userId)) {
-			$cart = $this->repository->getOne($id);
-			$this->repository->deleteProduct($cart);
+			$cart = $this->cartDb->getOne($id);
+			$this->cartDb->deleteProduct($cart);
 		} else {
-			$this->cartSession->delete($productId);
+			$this->cartSes->delete($productId);
 		}
-
 
 		echo json_encode(['success' => 'ok']);
 	}
@@ -67,9 +56,9 @@ class CartController extends Controllers
 	public function actionDrop()
 	{
 		if (!is_null($this->userId)) {
-			$this->repository->deleteAll($this->userId);
+			$this->cartDb->deleteAll($this->userId);
 		} else {
-			$this->cartSession->deleteAll();
+			$this->cartSes->deleteAll();
 		}
 
 		echo json_encode(['success' => 'ok']);

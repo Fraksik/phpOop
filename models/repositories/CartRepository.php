@@ -8,6 +8,16 @@ use app\models\repositories\session\CartSession;
 
 class CartRepository extends Repository
 {
+
+	private $cartSes;
+
+	public function __construct()
+	{
+		parent::__construct();
+		$this->cartSes = new CartSession();
+	}
+
+
 	public function getTableName()
 	{
 		return 'cart';
@@ -21,11 +31,11 @@ class CartRepository extends Repository
 	public function save(DataEntity $entity) {
 		$inCart = $this->getOneByEntity($entity);
 		if (is_null($inCart)) {
-			(new CartRepository())->create($entity);
+			$this->create($entity);
 		} else {
 			$entity = $inCart;
 			$entity->count += 1;
-			(new CartRepository())->update($entity);
+			$this->update($entity);
 		}
 	}
 
@@ -89,7 +99,7 @@ class CartRepository extends Repository
 
 	public function getCartCost($userId = null) {
 		if (is_null($userId)) {
-			$cart = (new CartSession())->getAll();
+			$cart = $this->cartSes->getAll();
 		} else {
 			$cart = $this->getAllByUser($userId);
 		}

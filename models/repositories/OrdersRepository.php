@@ -2,20 +2,12 @@
 
 namespace app\models\repositories;
 
+use app\base\App;
 use app\models\DataEntity;
 use app\models\Orders;
 
 class OrdersRepository extends Repository
 {
-	private $cartRepository;
-
-
-	public function __construct()
-	{
-		parent::__construct();
-		$this->cartRepository = new CartRepository();
-	}
-
 
 	public function getTableName()
 	{
@@ -30,7 +22,7 @@ class OrdersRepository extends Repository
 	public function create(DataEntity $entity)
 	{
 		parent::create($entity);
-		$this->cartRepository->setOrder($entity->id);
+		App::call()->cartDb->setOrder($entity->id);
 	}
 
 	public function getUserOrders($userId)
@@ -49,7 +41,7 @@ class OrdersRepository extends Repository
 
 	public function getOrder($orderId)
 	{
-		$table = $this->cartRepository->getTableName();
+		$table = App::call()->cartDb->getTableName();
 		$sql = "SELECT 
 				{$table}.id AS cart_id, {$table}.count, {$table}.orderId,
 				product.* 

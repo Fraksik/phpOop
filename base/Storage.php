@@ -18,4 +18,5 @@ class Storage
 		}
 		return $this->items[$key];
 	}
+
 }

@@ -4,6 +4,8 @@ namespace app\controllers;
 
 
 use app\base\App;
+use app\models\repositories\session\CartSession;
+use app\models\repositories\session\UserSession;
 use app\services\renderers\IRenderer;
 
 abstract class Controllers
@@ -14,7 +16,12 @@ abstract class Controllers
 	protected $defaultAction = 'index';
 	protected $layout = "main";
 	protected $useLayout;
-	protected $repository;
+	protected $productDb;
+	protected $userDb;
+	protected $ordersDb;
+	protected $cartDb;
+	protected $userSes;
+	protected $cartSes;
 	private $renderer = null;
 
 	public function __construct(IRenderer $renderer, $useLayout = true)
@@ -23,7 +30,12 @@ abstract class Controllers
 		$this->useLayout = $useLayout;
 		$this->request = App::call()->request;
 		$this->session = App::call()->session;
-		$this->repository = $this->getRepository();
+		$this->productDb = App::call()->productDb;
+		$this->userDb = App::call()->userDb;
+		$this->cartDb = App::call()->cartDb;
+		$this->ordersDb = App::call()->ordersDb;
+		$this->userSes = new UserSession();
+		$this->cartSes = new CartSession();
 	}
 
 	public function run($action = null)
@@ -36,8 +48,6 @@ abstract class Controllers
 			echo "404";
 		}
 	}
-
-	abstract public function getRepository();
 
 	protected function render($template, $params = [])
 	{
